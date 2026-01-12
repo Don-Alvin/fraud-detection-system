@@ -33,3 +33,16 @@ fraud-detection-system/
  - Features: 434 (Got from merging transactions and identity data)
  - Fraud rate: 3.5%
  - Time period: ~6 months of data
+
+## Tech Stack
+**Machine Learning**
+- XGBoost
+- LightGBM
+- TensorFlow/PyTorch
+- Imbalanced-learn
+
+**Deployment**
+- FastApi
+- Looker Studio
+- Docker
+- Github Actions
