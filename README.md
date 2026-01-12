@@ -16,13 +16,13 @@ In this project I build a production-ready fraud detection system that:
 ## Project Structure
 
 fraud-detection-system/
-├── data/                   # Data storage (not committed)
-├── research/               # Jupyter notebooks for exploration
-├── src/                    # Production code
-├── api/                    # FastAPI application
-├── dashboard/              # Streamlit monitoring dashboard
-├── tests/                  # Unit and integration tests
-└── deployment/             # Docker and deployment configs
+- ├── data/                   # Data storage
+- ├── research/               # Jupyter notebooks for exploration
+- ├── src/                    # Production code
+- ├── api/                    # FastAPI application
+- ├── dashboard/              # Streamlit monitoring dashboard
+- ├── tests/                  # Unit and integration tests
+- └── deployment/             # Docker and deployment configs
 
 ## Dataset
 **Source**: [IEEE-CIS Fraud Detection (Kaggle)](https://www.kaggle.com/c/ieee-fraud-detection)
