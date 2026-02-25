@@ -6,3 +6,5 @@ jupyter==1.1.1
 plotly==6.5.1
 pyarrow==22.0.0
 tqdm==4.67.1
+scikit-learn==1.8.0
+xgboost==3.2.0
