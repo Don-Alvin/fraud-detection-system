@@ -1,0 +1,17 @@
+# API
+fastapi
+uvicorn
+pydantic
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# ML & Data
+pandas
+numpy
+scikit-learn
+xgboost
+
+# Utilities
+python-dotenv
