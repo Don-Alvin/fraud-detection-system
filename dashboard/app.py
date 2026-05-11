@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # Configuration
-API_URL = "https://fraud-detection-system-1xqf.onrender.com/docs"
+API_URL = "https://fraud-detection-system-1xqf.onrender.com"
 
 # Page configuration
 st.set_page_config(
@@ -45,7 +45,6 @@ if page == "Home":
     - **Product C** has the highest fraud rate (11.69%)
     - **Night transactions** are 22% riskier than daytime
     """)
-    st.image("https://images.pexels.com/photos/7948054/pexels-photo-7948054.jpeg", width=True)
 
 # Predict Transaction Page (UNCHANGED)
 if page == "Predict Transaction":
@@ -89,7 +88,7 @@ if page == "Predict Transaction":
 
     st.divider()
 
-    if st.button("🔍 Predict Fraud", type="primary", use_container_width=True):
+    if st.button("Predict Fraud", type="primary", use_container_width=True):
         with st.spinner("Analyzing transaction..."):
             try:
                 payload = {
@@ -172,7 +171,7 @@ if page == "Predict Transaction":
 
 # EDA Insights Page
 elif page == "EDA Insights":
-    st.header("📊 Exploratory Data Analysis Insights")
+    st.header("Exploratory Data Analysis Insights")
     st.markdown("Key fraud patterns discovered from 590,540 transactions over 6 months")
     
     # Key Stats Row
