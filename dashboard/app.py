@@ -27,6 +27,7 @@ page = st.sidebar.radio("Go to", ["Home", "Predict Transaction", "EDA Insights",
 # Home Page
 if page == "Home":
     st.header("Welcome to the Fraud Detection Dashboard")
+    st.image("https://images.pexels.com/photos/30309058/pexels-photo-30309058.jpeg", width='stretch')
     st.markdown("""
     This dashboard provides comprehensive insights into our fraud detection system, trained on the IEEE-CIS dataset.
     
