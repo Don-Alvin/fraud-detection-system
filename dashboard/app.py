@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import pandas as pd
-import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -481,6 +480,18 @@ elif page == "Model Performance":
                   delta=f"+{(perf['f1_score'] - baseline_metrics['f1_score'])*100:.1f}%")
     
     st.divider()
+
+    # Recall vs Precision Tradeoff
+    st.subheader("Recall vs Precision Tradeoff")
+    st.markdown("""
+                With a dataset that's **96.5% legitimate transactions**, even a tiny 1% false positive rate creates many false alarms relative to fraud cases. Our metrics tell the real story:
+
+| What Matters | Our Performance | Why It's Good |
+|--------------|-----------------|----------------|
+| **False Positive Rate** | **1.04%** | Only 1 in 100 legit transactions flagged - excellent for fraud detection |
+| **Recall** | **84.9%** | We catch 85% of all fraud attempts |
+| **Business Impact** | **+102 frauds caught** | Estimated $15,222 in fraud losses prevented |
+""")
     
     # Confusion Matrix
     st.subheader("Confusion Matrix")
