@@ -2,6 +2,12 @@
 
 REST API for real-time fraud detection using XGBoost.
 
+## Live Endpoint
+
+**Base URL:** https://fraud-detection-system-1xqf.onrender.com
+
+**Interactive Docs:** https://fraud-detection-system-1xqf.onrender.com/docs
+
 ## Quick Start
 
 ### Installation
