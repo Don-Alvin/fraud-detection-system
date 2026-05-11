@@ -153,3 +153,6 @@ With a dataset that's **96.5% legitimate transactions**, even a tiny 1% false po
 - Streamlit
 - Docker
 - Github Actions
+
+### API Documentation
+[API Docs](./api/README.md)
