@@ -3,7 +3,7 @@ from pathlib import Path
 
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent
-MODELS_DIR = PROJECT_ROOT / "models"
+MODELS_DIR = PROJECT_ROOT / "models/production"
 
 # Model files
 MODEL_PATH = MODELS_DIR / "fraud_detector_v1.pkl"
@@ -17,8 +17,8 @@ API_VERSION = '1.0'
 API_DESCRIPTION = 'An API for detecting fraudulent transactions using a pre-trained machine learning model.'    
 
 # Prediction settings
-FRAUD_THRESHOLD = 0.5  # Threshold for classifying a transaction as fraudulent
-HIGH_CONFIDENCE_THRESHOLD = 0.8  # Threshold for high confidence predictions
+FRAUD_THRESHOLD = 0.5  
+HIGH_CONFIDENCE_THRESHOLD = 0.8  
 
 # Feature defaults (if any)
 FEATURE_DEFAULTS = {
