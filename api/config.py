@@ -3,7 +3,11 @@ from pathlib import Path
 
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent
-MODELS_DIR = PROJECT_ROOT / "models/production"
+MODELS_DIR = PROJECT_ROOT / "models"/"production"
+
+# Fallback: check environment variable (useful for Render)
+if os.getenv("MODELS_DIR"):
+    MODELS_DIR = Path(os.getenv("MODELS_DIR"))
 
 # Model files
 MODEL_PATH = MODELS_DIR / "fraud_detector_v1.pkl"
