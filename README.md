@@ -132,6 +132,18 @@ params = {
 | F1-Score | 0.354 | 0.377 | ▲ **+6.5%** |
 | False Positive Rate | ~2% | 1.04% | ▼ **-48%** |
 
+### Why Precision is 24% (and why that's actually good)
+
+With a dataset that's **96.5% legitimate transactions**, even a tiny 1% false positive rate creates many false alarms relative to fraud cases.
+
+| What Matters | Our Performance | Why It's Good |
+|--------------|-----------------|----------------|
+| **False Positive Rate** | 1.04% | Only 1 in 100 legit transactions flagged for review |
+| **Recall** | 84.9% | We catch 85% of all fraud attempts |
+| **Business Impact** | +102 frauds caught | $15,222 in fraud losses prevented |
+
+
+
 ## Tech Stack
 **Machine Learning**
 - XGBoost
