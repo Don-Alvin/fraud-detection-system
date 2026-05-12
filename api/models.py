@@ -82,8 +82,8 @@ class ModelInfoResponse(BaseModel):
 
     model_name: str = Field(..., description="Name of the loaded model.")
     version: str = Field(..., description="Version of the loaded model.")
-    date_created: datetime = Field(..., description="Date when the model was created.")
+    date_created: str = Field(..., description="Date when the model was created.")
     performance_metrics: Dict[str, Any] = Field(..., description="Performance metrics of the model (e.g., accuracy, precision, recall).")
     features_count: int = Field(..., description="Number of features used by the model.")
-    training_samples: int = Field(..., description="Number of samples used to train the model.")
+    training_data: str = Field(..., description="Name of the training dataset.")
 

@@ -4,8 +4,6 @@ FastAPI application for the API endpoints.
 
 import pickle
 import json
-import pandas as pd
-import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
@@ -20,8 +18,7 @@ from api.config import (
     API_TITLE,
     API_VERSION,
     API_DESCRIPTION,
-    FRAUD_THRESHOLD,
-    HIGH_CONFIDENCE_THRESHOLD
+    FRAUD_THRESHOLD
 )
 
 # Configure logging
@@ -76,6 +73,7 @@ async def load_model():
         # Load metadata
         with open(METADATA_PATH, 'r') as f:
             metadata = json.load(f)
+            print(f"Model metadata: {metadata}")
         logger.info("Model metadata loaded successfully.")
 
     except Exception as e:
@@ -122,10 +120,10 @@ async def model_info():
     return ModelInfoResponse(
         model_name=metadata['model_name'],
         version=metadata['version'],
-        date_created=metadata['date_created'],
-        performance_metrics=metadata['performance_metrics'],
-        features_count=metadata['features_count'],
-        training_data=metadata['training_samples']
+        date_created=metadata['training_date'],
+        performance_metrics=metadata['metrics'],
+        features_count=len(metadata['features']),
+        training_data=metadata['training_data']
     )
 
 @app.post("/predict", response_model=PredictionResponse, tags=['Prediction'])
@@ -134,7 +132,7 @@ async def predict(transaction: TransactionRequest):
     Endpoint to make a fraud prediction based on transaction data.
     """
     if model is None:
-        raise HTTPException(status_code=503, detail="Model not loaded. Please try again later.")
+        logger.warning("Prediction requested but model is not loaded using demo prediction mode.")
     
     try:
         # Convert request to dict

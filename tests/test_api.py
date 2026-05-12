@@ -37,3 +37,13 @@ def test_predict_high_risk_transaction():
     response = client.post("/predict", json=payload)
     assert response.status_code == 200
     assert response.json()["fraud_probability"] > 0.5
+
+def test_predict_missing_required_field():
+    payload = {"ProductCD": "W"}
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+
+def test_health_returns_version():
+    response = client.get("/health")
+    assert "version" in response.json()
+    assert "timestamp" in response.json()
