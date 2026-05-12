@@ -1,7 +1,7 @@
 {
     "model_name": "Fraud Detection XGBoost v1",
     "model_type": "XGBoost Classifier",
-    "training_date": "2026-05-08 09:25:50",
+    "training_date": "2026-05-12 12:13:35",
     "version": "1.0",
     "training_data": "train.csv",
     "features": [

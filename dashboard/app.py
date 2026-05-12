@@ -88,7 +88,7 @@ if page == "Predict Transaction":
 
     st.divider()
 
-    if st.button("Predict Fraud", type="primary", use_container_width=True):
+    if st.button("Predict Fraud", type="primary", width='stretch'):
         with st.spinner("Analyzing transaction..."):
             try:
                 payload = {
@@ -159,7 +159,7 @@ if page == "Predict Transaction":
                         }
                     ))
                     fig.update_layout(height=300)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width='stretch')
 
                 else:
                     st.error(f"API Error: {response.status_code}")
@@ -207,7 +207,7 @@ elif page == "EDA Insights":
         fig.add_hline(y=3.5, line_dash="dash", line_color="red", 
                       annotation_text="Overall 3.5%")
         fig.update_traces(line=dict(color="#e74c3c", width=3))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width=True)
         st.caption("💡 **Insight:** Peak fraud between 2-5 AM (4.7-5.0%). Night transactions are 22% riskier.")
     
     with col2:
@@ -223,7 +223,7 @@ elif page == "EDA Insights":
                      color_continuous_scale="Reds")
         fig.add_hline(y=3.5, line_dash="dash", line_color="blue", 
                       annotation_text="Overall 3.5%")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         st.caption("💡 **Insight:** Slightly higher fraud on Sundays (3.71%)")
     
     st.divider()
@@ -247,7 +247,7 @@ elif page == "EDA Insights":
                      color_continuous_scale="Reds",
                      text="Fraud_Rate")
         fig.update_traces(textposition="outside")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         st.caption("💡 **Insight:** Product C has **5.7x higher** fraud rate than Product W")
     
     with col2:
@@ -262,7 +262,7 @@ elif page == "EDA Insights":
                      color_continuous_scale="Reds")
         fig.add_hline(y=3.5, line_dash="dash", line_color="blue",
                       annotation_text="Overall 3.5%")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         st.caption("**Insight:** Discover cards have **2.2x higher** fraud rate than average")
     
     st.divider()
@@ -277,7 +277,7 @@ elif page == "EDA Insights":
         "Difference": ["+9.32%", "+9.32%", "+6.10%", "+8.14%", "+8.14%", "-9.26%", "-9.05%"]
     })
     
-    st.dataframe(missing_insights, use_container_width=True, hide_index=True)
+    st.dataframe(missing_insights, width=True, hide_index=True)
     st.caption("**Insight:** Missing address data correlates strongly with fraud (+9.32%). Missing email domains also indicate higher risk.")
     
     st.divider()
@@ -293,7 +293,7 @@ elif page == "EDA Insights":
             "Legitimate": ["$134.51", "$68.50", "$239.40", "$0.25", "$31,937", "1.23%", "1.15%"],
             "Fraud": ["$149.24", "$75.00", "$232.21", "$0.29", "$5,191", "0.39%", "1.02%"]
         })
-        st.dataframe(amount_stats, use_container_width=True, hide_index=True)
+        st.dataframe(amount_stats, width='stretch', hide_index=True)
         st.caption("**Insight:** Fraudulent transactions average $14.73 higher than legitimate ones")
     
     with col2:
@@ -307,7 +307,7 @@ elif page == "EDA Insights":
                      color="Fraud_Rate",
                      color_continuous_scale="Reds")
         fig.add_hline(y=3.5, line_dash="dash", line_color="blue")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         st.caption("**Insight:** Medium-sized transactions ($50-250) have highest fraud risk")
 
 # Feature Engineering Page
@@ -365,7 +365,7 @@ elif page == "Feature Engineering":
         ]
     })
     
-    st.dataframe(fe_summary, use_container_width=True, hide_index=True)
+    st.dataframe(fe_summary, width='stretch', hide_index=True)
     
     st.divider()
     
@@ -428,7 +428,7 @@ elif page == "Feature Engineering":
                       xaxis_title="Feature Set",
                       yaxis_title="Score",
                       hovermode="x unified")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     st.caption("Each feature engineering phase contributed 0.5-2% improvement in ROC-AUC")
 
 # Model Performance Page
@@ -512,7 +512,7 @@ elif page == "Model Performance":
         color_continuous_scale="RdYlGn_r",
         title="Confusion Matrix (Validation Set - 118,108 transactions)"
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Business Impact
     st.subheader("Business Impact")
@@ -537,7 +537,7 @@ elif page == "Model Performance":
         "Key Features": ["V258, V70, V91", "Amount, Time", "card1, card4", 
                         "M6_is_missing, V9_is_missing", "DeviceType", "txn_count_1h"]
     })
-    st.dataframe(feature_categories, use_container_width=True, hide_index=True)
+    st.dataframe(feature_categories, width='stretch', hide_index=True)
     
     st.caption("Vesta features dominate importance, but engineered features (missing flags, velocity) provide critical signal")
 
