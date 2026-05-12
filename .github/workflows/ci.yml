@@ -11,22 +11,22 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      -name: Checkout code
-       uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      -name: Set up Python
-       uses: actions/setup-python@v4
-       with:
-         python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
         
-      -name: Install API dependencies
-       run: pip install -r api/requirements.txt
+      - name: Install API dependencies
+        run: pip install -r api/requirements.txt
       
-      -name: install test dependencies
-       run: pip install pytest httpx
+      - name: Install test dependencies
+        run: pip install pytest httpx
       
-      -name: Run API tests
-       run: pytest tests/ -v
+      - name: Run API tests
+        run: pytest tests/ -v
 
   docker:
     name: Build Docker Images
@@ -34,11 +34,11 @@ jobs:
     needs: test
 
     steps:
-      -name: checkout code
-       uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      -name: Build API Docker image
-       run: docker build -t fraud-detection-api -f api/Dockerfile .
+      - name: Build API Docker image
+        run: docker build -t fraud-detection-api -f api/Dockerfile .
       
-      -name: Build Dashboard Docker image
-       run: docker build -t fraud-detection-dashboard -f dashboard/Dockerfile .
+      - name: Build Dashboard Docker image
+        run: docker build -t fraud-detection-dashboard -f dashboard/Dockerfile .
