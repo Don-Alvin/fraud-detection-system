@@ -1,0 +1,15 @@
+{
+    "global_fraud_rate": 0.03499000914417313,
+    "median_amount": 68.769,
+    "mean_amount": 135.02717637247264,
+    "card_amt_mean_global": 135.02717637247267,
+    "card_amt_std_global": 186.71770059899023,
+    "card_fraud_rate_global": 0.03499000914417313,
+    "product_fraud_rate_global": 0.03499000914417312,
+    "p_email_fraud_rate_global": 0.03602817264818055,
+    "r_email_fraud_rate_global": 0.08177520740616646,
+    "addr1_fraud_rate_global": 0.02462111829645183,
+    "addr2_fraud_rate_global": 0.024621118296451822,
+    "txn_frequency_global": 13.91969905767332,
+    "time_since_last_global": 46.293086735116255
+}
