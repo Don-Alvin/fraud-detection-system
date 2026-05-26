@@ -53,10 +53,6 @@ def load_lookup_tables():
             global_stats = json.load(f)
         logger.info("Global stats loaded")
 
-        with open(MODELS_DIR / "global_stats.json", 'r') as f:
-            global_stats = json.load(f)
-        logger.info("Global stats loaded")
-
         with open(MODELS_DIR / "target_encodings_v1.json", 'r') as f:
             target_encodings = json.load(f)
         logger.info("Target encodings loaded.")
@@ -65,11 +61,29 @@ def load_lookup_tables():
             label_encoders = pickle.load(f)
         logger.info(f"Label emcoders loaded: {len(label_encoders)} encoders.")
 
-        with open(MODELS_DIR / "feature_names.v1.pkl", 'rb') as f:
+        with open(MODELS_DIR / "feature_names_v1.pkl", 'rb') as f:
             feature_names = pickle.load(f)
         logger.info(f"Feature names loaded: {len(feature_names)} features.")
 
-        return True
+        all_loaded = all([
+            card_lookup is not None,
+            product_lookup is not None,
+            p_email_lookup is not None,
+            r_email_lookup is not None,
+            addr1_lookup is not None,
+            addr2_lookup is not None,
+            global_stats is not None,
+            target_encodings is not None,
+            label_encoders is not None,
+            feature_names is not None
+        ])
+        
+        if all_loaded:
+            logger.info("All lookup tables loaded successfully")
+            return True
+        else:
+            logger.warning("Some lookup tables failed to load")
+            return False
     except Exception as e:
         logger.error(f"Error loading lookup tables")
         return False
@@ -78,7 +92,7 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
     features = {}
 
     # Original transaction features
-    features['TransactionDT'] = transaction.get('TransactionDT', 0)
+    features['TransactionDT'] = transaction.get('TransactionDT', 43200)
     features['TransactionAmt'] = transaction.get('TransactionAmt', 0)
     features['ProductCD'] = transaction.get('ProductCD', 'W')
     features['card1'] = transaction.get('card1', np.nan)
@@ -111,8 +125,8 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
 
     features['transaction_hour'] = (transaction_dt // 3600) % 24
     features['transaction_day'] = transaction_dt // (3600 * 24)
-    features['transaction_day_of_week'] = (features['transaction_day'] % 7)
-    features['is_weekend'] = 1 if features['transaction_day_of_week'] >=5 else 0
+    features['transaction_weekday'] = (features['transaction_day'] % 7)
+    features['is_weekend'] = 1 if features['transaction_weekday'] >=5 else 0
     features['is_night'] = 1 if features['transaction_hour'] < 6 else 0
 
     hour = features['transaction_hour']
@@ -125,8 +139,10 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
     else:
         features['time_period'] = 3
     
+    logger.info(f"global_stats keys: {list(global_stats.keys()) if global_stats else 'None'}")
+    
     # Velocity features
-    features['time_since_last_txn_hrs'] = global_stats['time_since_last_global']
+    features['time_since_last_txn_hrs'] = global_stats.get('time_since_last_global', 24)
     features['txn_count_1h'] = 0
     features['txn_count_24h'] = 0
     features['txn_frequency'] = global_stats['txn_frequency_global']
@@ -148,7 +164,7 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
 
     if card1 is not None and card1 in card_lookup.index:
         card_row = card_lookup.loc[card1]
-        features = ['card_amt_mean'] = card_row['card_amt_mean']
+        features['card_amt_mean'] = card_row['card_amt_mean']
         features['card_amt_std'] = card_row['card_amt_std']
         features['card_amt_min'] = card_row['card_amt_min']
         features['card_amt_max'] = card_row['card_amt_max']
@@ -167,7 +183,7 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
 
     # Derived card features
     features['card_amt_range'] = features['card_amt_max'] - features['card_amt_min']
-    features['amt_vs_card_mean'] = (
+    features['card_deviation'] = (
         features['TransactionAmt'] - features['card_amt_mean']
     )
     features['amt_ratio_card_mean'] = (
@@ -195,7 +211,7 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
         features['product_txn_count'] = 1000
         features['product_fraud_rate'] = global_stats['product_fraud_rate_global']
 
-    features['amt_vs_product_mean'] = (
+    features['product_deviation'] = (
         features['TransactionAmt'] - features['product_amt_mean']
     )
     features['amt_ratio_product_mean'] = (

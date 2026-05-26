@@ -20,6 +20,7 @@ from api.config import (
     API_DESCRIPTION,
     FRAUD_THRESHOLD
 )
+from api.feature_engineering import reconstruct_features, load_lookup_tables
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -49,12 +50,19 @@ metadata = None
 
 @app.on_event("startup")
 async def load_model():
+    global model, label_encoders, feature_names, metadata
     """
     Load the machine learning model, label encoders, feature names, and metadata at startup.
     """
 
     global model, label_encoders, feature_names, metadata
     try:
+        # Load lookup tables
+        lookups_loaded = load_lookup_tables()
+        if lookups_loaded:
+            logger.info('Lookup tables loaded successfully.')
+        else:
+            logger.warning("Lookup tables failed to load")
         # Load model
         with open(MODEL_PATH, 'rb') as f:
             model = pickle.load(f)
@@ -123,7 +131,7 @@ async def model_info():
         date_created=metadata['training_date'],
         performance_metrics=metadata['metrics'],
         features_count=len(metadata['features']),
-        training_data=metadata['training_data']
+        training_data=metadata.get('training_samples', metadata.get('training_data', 590540))
     )
 
 @app.post("/predict", response_model=PredictionResponse, tags=['Prediction'])
@@ -135,36 +143,15 @@ async def predict(transaction: TransactionRequest):
         logger.warning("Prediction requested but model is not loaded using demo prediction mode.")
     
     try:
-        # Convert request to dict
         transaction_dict = transaction.dict()
-        
-        
-        # Simple preprocessing (minimal feature set for testing and demonstration)
-        logger.warning("Using minimal feature set for prediction. This is for testing and demonstration purposes only.")
+        features_df = reconstruct_features(transaction_dict)
 
-        # For demo we will just return a dummy prediction based on the transaction amount
-        transaction_amount = transaction_dict['TransactionAmt']
-        product_cd = transaction_dict['ProductCD']
-        email = transaction_dict.get('P_emaildomain', 'gmail.com')
-
-        # Dummy logic for prediction (for demonstration only)
-        fraud_probability = min(1.0, transaction_amount / 1000) 
-
-        # ProductCD-based adjustment, product c is riskier
-        if product_cd == 'C':
-            fraud_probability += 0.1
-        
-        # Email domain-based adjustment, certain domains are riskier (outlook.es is riskiest)
-        if email == 'outlook.es':
-            fraud_probability += 0.2
-        
-        fraud_probability = min(fraud_probability, 1.0)
-
-        # Determine prediction
+        # Predict using model
+        prediction_result = model.predict_proba(features_df)
+        fraud_probability = float(prediction_result[0, 1])
         is_fraud = fraud_probability >= FRAUD_THRESHOLD
-
-        # Calculate confidence level
         confidence_level = abs(fraud_probability - 0.5) * 2
+    
 
         # Determine risk level
         if fraud_probability >= 0.8:
@@ -180,12 +167,10 @@ async def predict(transaction: TransactionRequest):
             risk_level = "LOW"
             recommendation = "approve"
         
-        # Log the prediction details
-        logger.info(f"Transaction amount: {transaction_amount}, ProductCD: {product_cd}, Email: {email}, Fraud probability: {fraud_probability:.4f}, Risk level: {risk_level}, Recommendation: {recommendation}")
 
         return PredictionResponse(
             is_fraud=is_fraud,
-            fraud_probability=fraud_probability,
+            fraud_probability=round(fraud_probability, 4),
             confidence_level=round(confidence_level, 4),
             risk_level=risk_level,
             recommendation=recommendation,
@@ -195,6 +180,7 @@ async def predict(transaction: TransactionRequest):
     except Exception as e:
         logger.error(f"Error during prediction: {e}")
         raise HTTPException(status_code=500, detail="Error during prediction.")
+
 
 if __name__ == "__main__":
     import uvicorn
