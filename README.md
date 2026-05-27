@@ -25,16 +25,6 @@ In this project I build a production-ready fraud detection system that:
  - Provides real-time predictions
  - Features a monitoring dashboard
 
-## Project Structure
-
-fraud-detection-system/
-- ├── data/                   # Data storage
-- ├── research/               # Jupyter notebooks for exploration
-- ├── src/                    # Production code
-- ├── api/                    # FastAPI application
-- ├── dashboard/              # Streamlit monitoring dashboard
-- ├── tests/                  # Unit and integration tests
-- └── deployment/             # Docker and deployment configs
 
 ## Dataset
 **Source**: [IEEE-CIS Fraud Detection (Kaggle)](https://www.kaggle.com/c/ieee-fraud-detection)
@@ -122,8 +112,8 @@ params = {
     'max_depth': 6,
     'learning_rate': 0.1,
     'n_estimators': 100,
-    'scale_pos_weight': 27.58,  # Handles class imbalance
-    'tree_method': 'hist'        # Faster training
+    'scale_pos_weight': 27.58, 
+    'tree_method': 'hist'        
 }
 ```
 
@@ -147,7 +137,10 @@ With a dataset that's **96.5% legitimate transactions**, even a tiny 1% false po
 | **Recall** | 84.9% | We catch 85% of all fraud attempts |
 | **Business Impact** | +102 frauds caught | $15,222 in fraud losses prevented |
 
-
+**Services:**
+- **API** — FastAPI serving real-time predictions
+- **Dashboard** — Streamlit showing EDA insights and model performance
+- **CI/CD** — GitHub Actions running tests and building Docker images on every push
 
 ## Tech Stack
 **Machine Learning**
