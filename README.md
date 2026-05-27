@@ -3,6 +3,11 @@
 
 ## Live Demo
 
+[![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109-green.svg)](https://fastapi.tiangolo.com/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-1.7.6-orange.svg)](https://xgboost.readthedocs.io/)
+[![CI/CD](https://github.com/Don-Alvin/fraud-detection-system/actions/workflows/ci.yml/badge.svg)](https://github.com/Don-Alvin/fraud-detection-system/actions)
+
 | Service | Link | Status |
 |---------|------|--------|
 | **Streamlit Dashboard** | [fraud-detection-dashboard.streamlit.app](https://fraud-detection-system-pe2cwyxqfjjtqth4ub8muq.streamlit.app/) | Live |

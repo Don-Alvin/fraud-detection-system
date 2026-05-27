@@ -21,6 +21,7 @@ from api.config import (
     FRAUD_THRESHOLD
 )
 from api.feature_engineering import reconstruct_features, load_lookup_tables
+import api.feature_engineering as fe
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -139,8 +140,8 @@ async def predict(transaction: TransactionRequest):
     """
     Endpoint to make a fraud prediction based on transaction data.
     """
-    if model is None:
-        logger.warning("Prediction requested but model is not loaded using demo prediction mode.")
+    # if model is None:
+    #     logger.warning("Prediction requested but model is not loaded using demo prediction mode.")
     
     try:
         transaction_dict = transaction.dict()
