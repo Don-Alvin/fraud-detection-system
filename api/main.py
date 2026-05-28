@@ -20,7 +20,7 @@ from api.config import (
     API_DESCRIPTION,
     FRAUD_THRESHOLD
 )
-from api.feature_engineering import reconstruct_features, load_lookup_tables
+from api.feature_engineering import reconstruct_features, load_lookup_tables, card_lookup, product_lookup, global_stats
 import api.feature_engineering as fe
 
 # Configure logging
@@ -144,6 +144,10 @@ async def predict(transaction: TransactionRequest):
         raise HTTPException(status_code=503, detail="Model not loaded.")
     
     try:
+        logger.info(f"Prediction request recieved: {transaction.dict()}")
+        logger.info(f"Lookup tables status - card: {card_lookup is not None}",
+                    f"product: {product_lookup is not None}, "
+                    f"global_stats: {global_stats is not None}")
         transaction_dict = transaction.dict()
         features_df = reconstruct_features(transaction_dict)
 
