@@ -131,7 +131,7 @@ if page == "Predict Transaction":
                     with col3:
                         st.metric(
                             "Confidence",
-                            f"{result['confidence']*100:.1f}%"
+                            f"{result['confidence_level']*100:.1f}%"
                         )
 
                     # Recommendation
