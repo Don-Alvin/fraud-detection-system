@@ -140,8 +140,8 @@ async def predict(transaction: TransactionRequest):
     """
     Endpoint to make a fraud prediction based on transaction data.
     """
-    # if model is None:
-    #     logger.warning("Prediction requested but model is not loaded using demo prediction mode.")
+    if model is None:
+        raise HTTPException(status_code=503, detail="Model not loaded.")
     
     try:
         transaction_dict = transaction.dict()
