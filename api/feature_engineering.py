@@ -266,8 +266,27 @@ def reconstruct_features(transaction: dict) -> pd.DataFrame:
         features['addr2_txn_count'] = 100
         features['addr2_fraud_rate'] = global_stats['addr2_fraud_rate_global']
 
+    numeric_fields = [
+    'card1', 'card2', 'card3', 'card5',
+    'addr1', 'addr2', 'dist1', 'dist2'
+    ]
+
+    for field in numeric_fields:
+        val = features.get(field, np.nan)
+        try:
+            features[field] = float(val) if val is not None else np.nan
+        except (TypeError, ValueError):
+            features[field] = np.nan
+
     # Build a dataframe that aligns with the model
     df  = pd.DataFrame([features])
+
+    for col in df.columns:
+        if col not in [c for c in df.columns if '_is_missing' in c]:
+            try:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
+            except Exception:
+                pass
 
     # Encode categorical columns
     for col, le in label_encoders.items():
